@@ -4,6 +4,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
+
 import java.util.List;
 @Entity
 public class Producto {
@@ -19,7 +20,9 @@ public class Producto {
 	private Long imagenURL;
 	
 	@ManyToMany(mappedBy = "productos")
+
 	private List<CarritoDeCompra> carritos;
+
 	
 	public Producto(Long id, Long nombre, Long descripcion, float precio, int stock, String categotria, String marca,
 			Long imagenURL) {

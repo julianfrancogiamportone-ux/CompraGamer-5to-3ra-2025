@@ -28,7 +28,9 @@ public class Usuario {
     private List<Orden> ordenes;
 
     @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
+
     private CarritoDeCompra carrito;
+
 
     public Usuario() {
         super();
@@ -100,11 +102,13 @@ public class Usuario {
         this.ordenes = ordenes;
     }
 
+
     public CarritoDeCompra getCarrito() {
         return carrito;
     }
 
     public void setCarrito(CarritoDeCompra carrito) {
+
         this.carrito = carrito;
     }
 }
