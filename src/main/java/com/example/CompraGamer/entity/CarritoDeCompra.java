@@ -1,5 +1,7 @@
 package com.example.CompraGamer.entity;
 
+import java.util.List;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -9,6 +11,23 @@ public class CarritoDeCompra {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
+
+
+    @OneToOne
+    @JoinColumn(name = "usuario_id")
+
+    private Usuario usuario;
+
+
+
+    @ManyToMany
+
+
+    @JoinTable
+
+    private List<Producto> productos;
+    
     private Long usuario_id;
     private Long orden_id;
     private Long producto_id;
