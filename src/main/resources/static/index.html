@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <title>CompraGamer · Front</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+        :root {
+            --bg: #f3f5f9;
+            --card: #ffffff;
+            --accent: #4a90e2;
+            --accent-soft: #d9e7ff;
+            --text: #1f2933;
+            --text-soft: #6b7b93;
+            --border: #d8e2ef;
+            --danger: #e24a4a;
+        }
+
+        * { box-sizing: border-box; font-family: system-ui, -apple-system, sans-serif; }
+        body { margin: 0; background: var(--bg); color: var(--text); }
+
+        header {
+            padding: 1rem 2rem;
+            background: linear-gradient(90deg, #3b6fb3, #4a90e2);
+            color: white;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        header h1 { margin: 0; font-size: 1.3rem; letter-spacing: 0.03em; }
+        header span { font-size: 0.9rem; opacity: 0.9; }
+
+        main { padding: 1.2rem; max-width: 1200px; margin: 0 auto; }
+
+        .layout { display: grid; grid-template-columns: 1.2fr 2fr 1.8fr; gap: 1rem; }
+        @media (max-width: 1100px) { .layout { grid-template-columns: 1fr; } }
+
+        .panel {
+            background: var(--card); padding: 1rem 1.1rem; border-radius: 14px;
+            box-shadow: 0 6px 20px rgba(15, 23, 42, 0.04); border: 1px solid var(--border);
+        }
+        .panel-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.7rem; }
+        .panel-title { font-size: 1.02rem; font-weight: 600; }
+        .panel-subtitle { font-size: 0.82rem; color: var(--text-soft); }
+        .badge { padding: 0.15rem 0.6rem; border-radius: 999px; font-size: 0.75rem; background: var(--accent-soft); color: var(--accent); }
+
+        label { font-size: 0.8rem; color: var(--text-soft); }
+        input, select { width: 100%; padding: 0.3rem 0.45rem; border-radius: 9px; border: 1px solid var(--border); font-size: 0.85rem; margin-bottom: 0.4rem; background: #f9fbff; }
+        button { border: none; border-radius: 999px; padding: 0.32rem 0.9rem; font-size: 0.85rem; cursor: pointer; transition: 0.1s ease; }
+        button:active { transform: scale(0.97); }
+        
+        .btn-primary { background: var(--accent); color: white; box-shadow: 0 4px 12px rgba(74, 144, 226, 0.35); }
+        .btn-primary:hover:not(:disabled) { background: #407fce; }
+        .btn-primary[disabled] { opacity: 0.5; cursor: not-allowed; }
+        .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text-soft); }
+        .btn-outline:hover { background: #edf2f7; }
+        .btn-danger-outline { background: transparent; border: 1px solid rgba(226, 74, 74, 0.45); color: var(--danger); }
+        .btn-danger-outline:hover { background: rgba(226, 74, 74, 0.06); }
+
+        .row { display: flex; gap: 0.4rem; } .row > div { flex: 1; }
+        .small-text { font-size: 0.78rem; color: var(--text-soft); }
+
+        /* Listas */
+        .productos-list, .carrito-items, .ordenes-list { overflow-y: auto; border: 1px solid var(--border); border-radius: 12px; }
+        .productos-list { display: flex; flex-direction: column; gap: 0.7rem; max-height: 500px; border: none; }
+        .carrito-items { max-height: 260px; }
+        .ordenes-list { max-height: 220px; }
+
+        .producto-card { display: grid; grid-template-columns: minmax(0, 2.4fr) auto auto; align-items: center; gap: 0.6rem; padding: 0.6rem 0.8rem; border-radius: 12px; border: 1px solid var(--border); background: #f9fbff; }
+        .producto-info h3 { margin: 0; font-size: 0.95rem; }
+        .producto-info p { margin: 0.1rem 0 0; font-size: 0.78rem; color: var(--text-soft); }
+        .producto-precio { font-weight: 600; font-size: 0.9rem; color: var(--accent); }
+        .producto-actions { display: flex; align-items: center; gap: 0.35rem; }
+        .input-cantidad { width: 55px; text-align: center; }
+
+        .carrito-row { display: grid; grid-template-columns: minmax(0, 2.5fr) auto auto auto; gap: 0.3rem; align-items: center; padding: 0.45rem 0.7rem; font-size: 0.82rem; border-bottom: 1px solid var(--border); }
+        .carrito-row:last-child { border-bottom: none; }
+        .carrito-empty { padding: 0.7rem; font-size: 0.82rem; color: var(--text-soft); text-align: center; }
+        .carrito-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 0.7rem; }
+        .carrito-total { font-size: 1rem; font-weight: 600; color: var(--accent); }
+
+        .orden-row { padding: 0.4rem 0.7rem; display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px solid var(--border); font-size: 0.8rem; }
+        .orden-row:last-child { border-bottom: none; }
+        .orden-id { font-weight: 600; } .orden-meta { color: var(--text-soft); } .orden-total { color: var(--accent); font-weight: 600; }
+
+        .toast { position: fixed; bottom: 1rem; right: 1rem; background: #1f2933; color: white; padding: 0.7rem 1rem; border-radius: 999px; font-size: 0.85rem; box-shadow: 0 8px 24px rgba(15, 23, 42, 0.4); opacity: 0; transform: translateY(10px); transition: 0.2s ease; pointer-events: none; z-index: 50; }
+        .toast.show { opacity: 1; transform: translateY(0); }
+    </style>
+</head>
+<body>
+<header>
+    <h1>CompraGamer · Demo</h1>
+    <span>Usuario · Productos · Carrito · Órdenes</span>
+</header>
+
+<main>
+    <div class="layout">
+        <section class="panel">
+            <div class="panel-header">
+                <div><div class="panel-title">Usuario</div><div class="panel-subtitle">Seleccioná o creá un usuario</div></div>
+            </div>
+            <div style="margin-bottom: 0.6rem;">
+                <div class="small-text">Usuario actual:</div>
+                <div id="usuario-actual" class="small-text" style="font-weight:600;">(ninguno)</div>
+            </div>
+            <div style="margin-bottom: 0.9rem;">
+                <label for="input-usuario-id">Usar usuario existente (ID)</label>
+                <div class="row">
+                    <div><input type="number" id="input-usuario-id" placeholder="Ej: 1" min="1" /></div>
+                    <button id="btn-usar-usuario" class="btn-outline" type="button">Usar</button>
+                </div>
+            </div>
+            <hr style="border:none;border-top:1px solid var(--border);margin:0.5rem 0 0.7rem;" />
+            <div class="panel-subtitle" style="margin-bottom:0.3rem;">Crear nuevo usuario</div>
+            <div>
+                <label>Nombre</label> <input id="u-nombre" type="text" />
+                <label>Apellido</label> <input id="u-apellido" type="text" />
+                <label>Email</label> <input id="u-email" type="email" />
+                <label>Dirección</label> <input id="u-direccion" type="text" />
+                <button id="btn-crear-usuario" class="btn-primary" type="button" style="margin-top:0.4rem;width:100%;">Crear y usar</button>
+            </div>
+        </section>
+
+        <section class="panel">
+            <div class="panel-header">
+                <div><div class="panel-title">Productos</div><div class="panel-subtitle">Disponibles para compra</div></div>
+                <span id="count-productos" class="badge">0 productos</span>
+            </div>
+            <div id="productos" class="productos-list"></div>
+        </section>
+
+        <section class="panel">
+            <div class="panel-header">
+                <div><div class="panel-title">Carrito</div><div class="panel-subtitle">Items seleccionados</div></div>
+                <button id="btn-vaciar" class="btn-outline" type="button">Vaciar</button>
+            </div>
+            <div id="carrito-items" class="carrito-items">
+                <div class="carrito-empty">Seleccioná un usuario para usar el carrito.</div>
+            </div>
+            <div class="carrito-footer">
+                <div><div class="carrito-total-label">Total</div><div id="carrito-total" class="carrito-total">$ 0,00</div></div>
+                <button id="btn-confirmar" class="btn-primary" type="button" disabled>Confirmar compra</button>
+            </div>
+
+            <div style="margin-top: 1rem;">
+                <div class="panel-header" style="margin-bottom: 0.4rem;">
+                    <div><div class="panel-title">Órdenes</div><div class="panel-subtitle">Historial del usuario</div></div>
+                </div>
+                <div id="ordenes" class="ordenes-list">
+                    <div class="carrito-empty">Seleccioná un usuario para ver sus órdenes.</div>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>
+
+<div id="toast" class="toast"></div>
+<script src="app.js"></script>
+</body>
+</html>

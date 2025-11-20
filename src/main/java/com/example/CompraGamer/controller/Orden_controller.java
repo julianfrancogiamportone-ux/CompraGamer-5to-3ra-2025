@@ -9,6 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/ordenes")
+@CrossOrigin(origins = "*")
 public class Orden_controller {
 
     private final i_Orden_service service;

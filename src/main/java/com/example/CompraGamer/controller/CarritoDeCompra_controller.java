@@ -9,6 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/carritos")
+@CrossOrigin(origins = "*")
 public class CarritoDeCompra_controller {
 
     private final i_CarritoDeCompra_service service;

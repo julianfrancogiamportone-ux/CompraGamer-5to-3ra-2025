@@ -3,40 +3,46 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.List;
 @Entity
 public class Producto {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	private Long nombre;
-	private Long descripcion;
-	private float precio;
-	private int stock;
-	private String categotria;
-	private String marca;
-	private Long imagenURL;
-	
-	@ManyToMany(mappedBy = "productos")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    
+   
+    private String nombre;
+    private String descripcion;
+    
+    private float precio;
+    private int stock;
+    private String categoria; 
+    private String marca;
+    private String imagenURL; 
+    
+    
+    @OneToMany(mappedBy = "producto")
+    @JsonIgnore
+    private List<CarritoDeCompra> itemsEnCarritos;
 
-	private List<CarritoDeCompra> carritos;
-
 	
-	public Producto(Long id, Long nombre, Long descripcion, float precio, int stock, String categotria, String marca,
-			Long imagenURL) {
+	
+	
+	public Producto(String nombre, String descripcion, float precio, int stock, String categoria, String marca,
+			String imagenURL, List<CarritoDeCompra> itemsEnCarritos) {
 		super();
-		this.id = id;
 		this.nombre = nombre;
 		this.descripcion = descripcion;
 		this.precio = precio;
 		this.stock = stock;
-		this.categotria = categotria;
+		this.categoria = categoria;
 		this.marca = marca;
 		this.imagenURL = imagenURL;
+		this.itemsEnCarritos = itemsEnCarritos;
 	}
-	
 	public Producto() {
 		super();
 	}
@@ -46,16 +52,16 @@ public class Producto {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public Long getNombre() {
+	public String getNombre() {
 		return nombre;
 	}
-	public void setNombre(Long nombre) {
+	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-	public Long getDescripcion() {
+	public String getDescripcion() {
 		return descripcion;
 	}
-	public void setDescripcion(Long descripcion) {
+	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
 	public float getPrecio() {
@@ -70,11 +76,11 @@ public class Producto {
 	public void setStock(int stock) {
 		this.stock = stock;
 	}
-	public String getCategotria() {
-		return categotria;
+	public String getCategoria() {
+		return categoria;
 	}
-	public void setCategotria(String categotria) {
-		this.categotria = categotria;
+	public void setCategoria(String categoria) {
+		this.categoria = categoria;
 	}
 	public String getMarca() {
 		return marca;
@@ -82,12 +88,19 @@ public class Producto {
 	public void setMarca(String marca) {
 		this.marca = marca;
 	}
-	public Long getImagenURL() {
+	public String getImagenURL() {
 		return imagenURL;
 	}
-	public void setImagenURL(Long imagenURL) {
+	public void setImagenURL(String imagenURL) {
 		this.imagenURL = imagenURL;
 	}
+	public List<CarritoDeCompra> getItemsEnCarritos() {
+		return itemsEnCarritos;
+	}
+	public void setItemsEnCarritos(List<CarritoDeCompra> itemsEnCarritos) {
+		this.itemsEnCarritos = itemsEnCarritos;
+	}
+	
 	
 }
 

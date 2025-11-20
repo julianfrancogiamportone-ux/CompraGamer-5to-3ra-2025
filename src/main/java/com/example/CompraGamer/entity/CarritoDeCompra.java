@@ -1,52 +1,91 @@
 package com.example.CompraGamer.entity;
 
-import java.util.List;
-
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class CarritoDeCompra {
 
-    @Id
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-
-
-
-    @OneToOne
-    @JoinColumn(name = "usuario_id")
-
-    private Usuario usuario;
-
-
-
-    @ManyToMany
-
-
-    @JoinTable
-
-    private List<Producto> productos;
     
-    private Long usuario_id;
-    private Long orden_id;
-    private Long producto_id;
     private Integer cantidad;
 
-    public CarritoDeCompra() {}
+    @ManyToOne
+    @JoinColumn(name = "usuario_id")
+    private Usuario usuario;
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    @ManyToOne
+    @JoinColumn(name = "producto_id")
+    private Producto producto;
 
-    public Long getUsuario_id() { return usuario_id; }
-    public void setUsuario_id(Long usuario_id) { this.usuario_id = usuario_id; }
+    public Orden getOrden() {
+		return orden;
+	}
 
-    public Long getOrden_id() { return orden_id; }
-    public void setOrden_id(Long orden_id) { this.orden_id = orden_id; }
 
-    public Long getProducto_id() { return producto_id; }
-    public void setProducto_id(Long producto_id) { this.producto_id = producto_id; }
+	public void setOrden(Orden orden) {
+		this.orden = orden;
+	}
 
-    public Integer getCantidad() { return cantidad; }
-    public void setCantidad(Integer cantidad) { this.cantidad = cantidad; }
+	@ManyToOne
+    @JoinColumn(name = "orden_id")
+    private Orden orden;
+    public CarritoDeCompra() {
+        super();
+    }
+
+   
+    public CarritoDeCompra(Long id, Integer cantidad, Usuario usuario, Producto producto) {
+        super();
+        this.id = id;
+        this.cantidad = cantidad;
+        this.usuario = usuario;
+        this.producto = producto;
+    }
+
+    
+    public CarritoDeCompra(Integer cantidad, Usuario usuario, Producto producto) {
+        super();
+        this.cantidad = cantidad;
+        this.usuario = usuario;
+        this.producto = producto;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Integer getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(Integer cantidad) {
+        this.cantidad = cantidad;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public Producto getProducto() {
+        return producto;
+    }
+
+    public void setProducto(Producto producto) {
+        this.producto = producto;
+    }
 }
